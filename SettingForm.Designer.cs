@@ -90,7 +90,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(12, 63);
+			this.label2.Location = new System.Drawing.Point(12, 90);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(48, 13);
 			this.label2.TabIndex = 3;
@@ -102,7 +102,7 @@
 			this.cbTrain.FormattingEnabled = true;
 			this.cbTrain.Items.AddRange(new object[] {
             "Back Propagation"});
-			this.cbTrain.Location = new System.Drawing.Point(100, 60);
+			this.cbTrain.Location = new System.Drawing.Point(100, 87);
 			this.cbTrain.Name = "cbTrain";
 			this.cbTrain.Size = new System.Drawing.Size(121, 21);
 			this.cbTrain.TabIndex = 4;
@@ -165,7 +165,7 @@
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(11, 90);
+			this.label6.Location = new System.Drawing.Point(11, 63);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(70, 13);
 			this.label6.TabIndex = 7;
@@ -177,7 +177,7 @@
 			this.cbPer.FormattingEnabled = true;
 			this.cbPer.Items.AddRange(new object[] {
             "MSE"});
-			this.cbPer.Location = new System.Drawing.Point(100, 87);
+			this.cbPer.Location = new System.Drawing.Point(100, 60);
 			this.cbPer.Name = "cbPer";
 			this.cbPer.Size = new System.Drawing.Size(121, 21);
 			this.cbPer.TabIndex = 4;

@@ -16,6 +16,7 @@ namespace FunctionApproximation
 		List<List<double>> list_input = new List<List<double>>();
 		List<List<double>> list_ex_output = new List<List<double>>();
 
+		double scale = 1, delta = 0;
 		NeuralNetwork myNN;
 
 		public MainForm()
@@ -29,6 +30,7 @@ namespace FunctionApproximation
 
 		private void btSetting_Click(object sender, EventArgs e)
 		{
+			panel2.Enabled = false;
 			var frm = new SettingForm();
 			frm.Show();
 		}
@@ -36,18 +38,20 @@ namespace FunctionApproximation
 		private void btStep_Click(object sender, EventArgs e)
 		{
 			myNN.La.LearnStep();
-			richTextBox1.Text = myNN.PrintInfo();
+			//richTextBox1.Text = myNN.PrintInfo();
 			PlotOutput();
 
-			myNN.La.Iter++;
 			lbStep.Text = myNN.La.Iter + "";
 		}
 
 		private void btRun_Click(object sender, EventArgs e)
 		{
-			myNN.Learn();
-			PlotOutput();
-			lbStep.Text = myNN.La.Iter + "";
+			timer1.Interval = Settings.Default.Timer;
+			timer1.Enabled = true;
+			btStep.Enabled = false;
+			btRun.Enabled = false;
+			btPause.Enabled = true;
+			panel3.Enabled = false;
 		}
 
 		private void PlotOutput()
@@ -55,12 +59,38 @@ namespace FunctionApproximation
 			series_output.Points.Clear();
 			for(int i = 0; i < list_input.Count; i++)
 			{
-				myNN.CreateInput(list_input[i]);
+				myNN.InputLayer = list_input[i];
 
-				series_output.Points.Add(new DataPoint(list_input[i][0], myNN.Outputs[0]));
+				series_output.Points.Add(new DataPoint(list_input[i][0], myNN.Outputs[0] * scale - delta));
 			}
 
+			if(series_error.Points.Count > 500)
+				series_error.Points.RemoveAt(0);
 			series_error.Points.Add(myNN.La.Error);
+		}
+
+		private void timer1_Tick(object sender, EventArgs e)
+		{
+			if (myNN.La.Iter < myNN.La.MaxIteration && myNN.La.Error > myNN.La.ErrorThreshold)
+				Invoke(new EventHandler(btStep_Click));
+			else
+			{
+				timer1.Enabled = false;
+				btStep.Enabled = false;
+				btRun.Enabled = false;
+				btPause.Enabled = false;
+				panel3.Enabled = true;
+				MessageBox.Show("Done!");
+			}
+		}
+
+		private void btPause_Click(object sender, EventArgs e)
+		{
+			timer1.Enabled = false;
+			btStep.Enabled = true;
+			btRun.Enabled = true;
+			btPause.Enabled = false;
+			panel3.Enabled = true;
 		}
 
 		private void CreateNeuralNetwork()
@@ -92,6 +122,8 @@ namespace FunctionApproximation
 		{
 			cbFunc.SelectedIndex = 0;
 			tbNoise.Text = Settings.Default.Noise + "";
+			panel2.Enabled = false;
+			btPause.Enabled = false;
 		}
 
 		private void btPlot_Click(object sender, EventArgs e)
@@ -105,6 +137,7 @@ namespace FunctionApproximation
 				series_input.Points.Clear();
 				series_target.Points.Clear();
 				series_output.Points.Clear();
+				series_error.Points.Clear();
 				list_input.Clear();
 				list_ex_output.Clear();
 
@@ -113,6 +146,8 @@ namespace FunctionApproximation
 				switch ((string)cbFunc.SelectedItem)
 				{
 					case "sin(x)":
+						scale = 4;
+						delta = 2;
 						for (int i = 0; i < N; i++)
 						{
 							double x = 4 * Math.PI * i / N;
@@ -123,10 +158,26 @@ namespace FunctionApproximation
 							series_target.Points.Add(new DataPoint(x, t));
 
 							list_input.Add(new List<double> { x });
-							list_ex_output.Add(new List<double> { t });
+							list_ex_output.Add(new List<double> { (t + delta) / scale });
+						}
+						break;
+					case "x":
+						scale = 5;
+						delta = 0;
+						for(int i = 0; i < N; i++)
+						{
+							double x = 4 * (double)i / N;
+							double t = x + (2 * rand.NextDouble() - 1) * noise;
+							series_input.Points.Add(new DataPoint(x, x));
+							series_target.Points.Add(new DataPoint(x, t));
+
+							list_input.Add(new List<double> { x });
+							list_ex_output.Add(new List<double> { (t + delta) / scale });
 						}
 						break;
 					default:
+						scale = 4;
+						delta = 2;
 						for (int i = 0; i < N; i++)
 						{
 							double x = 4 * Math.PI * i / N;
@@ -137,12 +188,16 @@ namespace FunctionApproximation
 							series_target.Points.Add(new DataPoint(x, t));
 
 							list_input.Add(new List<double> { x });
-							list_ex_output.Add(new List<double> { t });
+							list_ex_output.Add(new List<double> { (t + delta) / scale });
 						}
 						break;
 				}
 
 				CreateNeuralNetwork();
+				panel2.Enabled = true;
+				btStep.Enabled = true;
+				btRun.Enabled = true;
+				btPause.Enabled = false;
 			}
 			catch(Exception ex)
 			{
