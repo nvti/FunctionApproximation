@@ -12,7 +12,7 @@ namespace FunctionApproximation
 {
 	public partial class MainForm : Form
 	{
-		Series series_input, series_output, series_target, series_error;
+		Series series_input, series_output, series_target, series_Learnerror, series_error;
 		List<List<double>> list_input = new List<List<double>>();
 		List<List<double>> list_ex_output = new List<List<double>>();
 
@@ -25,7 +25,9 @@ namespace FunctionApproximation
 			series_input = chart1.Series.FindByName("Input");
 			series_output = chart1.Series.FindByName("Output");
 			series_target = chart1.Series.FindByName("Target");
-			series_error = chart2.Series.FindByName("Error");
+			series_error = chart1.Series.FindByName("Error");
+
+			series_Learnerror = chart2.Series.FindByName("Error");
 		}
 
 		private void btSetting_Click(object sender, EventArgs e)
@@ -57,16 +59,19 @@ namespace FunctionApproximation
 		private void PlotOutput()
 		{
 			series_output.Points.Clear();
+			series_error.Points.Clear();
+
 			for(int i = 0; i < list_input.Count; i++)
 			{
 				myNN.InputLayer = list_input[i];
 
 				series_output.Points.Add(new DataPoint(list_input[i][0], myNN.Outputs[0] * scale - delta));
+				series_error.Points.Add(new DataPoint(list_input[i][0], (myNN.Outputs[0] - list_ex_output[i][0])* scale));
 			}
 
-			if(series_error.Points.Count > 500)
-				series_error.Points.RemoveAt(0);
-			series_error.Points.Add(myNN.La.Error);
+			if(series_Learnerror.Points.Count > 500)
+				series_Learnerror.Points.RemoveAt(0);
+			series_Learnerror.Points.Add(myNN.La.Error);
 		}
 
 		private void timer1_Tick(object sender, EventArgs e)
@@ -112,6 +117,11 @@ namespace FunctionApproximation
 			l.ErrorThreshold = Settings.Default.Err;
 			l.Inputs = list_input;
 			l.Outputs = list_ex_output;
+			if(l is BackPropagationLearningAlgorithm)
+			{
+				((BackPropagationLearningAlgorithm)l).Beta = Settings.Default.Beta;
+				((BackPropagationLearningAlgorithm)l).Nuy = Settings.Default.LearningRate;
+			}
 
 			ActivationFunc ac = (ActivationFunc)Settings.Default.Function;
 
@@ -138,6 +148,8 @@ namespace FunctionApproximation
 				series_target.Points.Clear();
 				series_output.Points.Clear();
 				series_error.Points.Clear();
+				series_Learnerror.Points.Clear();
+
 				list_input.Clear();
 				list_ex_output.Clear();
 
@@ -150,7 +162,7 @@ namespace FunctionApproximation
 						delta = 2;
 						for (int i = 0; i < N; i++)
 						{
-							double x = 4 * Math.PI * i / N;
+							double x = 2 * Math.PI * i / N;
 							double f = Math.Sin(x);
 							double t = f + (2 * rand.NextDouble() - 1) * noise;
 
@@ -175,12 +187,28 @@ namespace FunctionApproximation
 							list_ex_output.Add(new List<double> { (t + delta) / scale });
 						}
 						break;
+					case "sqrt(x)":
+						scale = 2;
+						delta = 0;
+						for (int i = 1; i <= N; i++)
+						{
+							double x = 4 * (double)i / N;
+							double f = Math.Sqrt(x);
+							double t = f + (2 * rand.NextDouble() - 1) * noise;
+
+							series_input.Points.Add(new DataPoint(x, f));
+							series_target.Points.Add(new DataPoint(x, t));
+
+							list_input.Add(new List<double> { x });
+							list_ex_output.Add(new List<double> { (t + delta) / scale });
+						}
+						break;
 					default:
 						scale = 4;
 						delta = 2;
 						for (int i = 0; i < N; i++)
 						{
-							double x = 4 * Math.PI * i / N;
+							double x = 2 * Math.PI * i / N;
 							double f = Math.Cos(x);
 							double t = f + (2 * rand.NextDouble() - 1) * noise;
 

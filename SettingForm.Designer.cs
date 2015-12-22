@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingForm));
 			this.btOK = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.cbNumHL = new System.Windows.Forms.ComboBox();
@@ -50,13 +51,18 @@
 			this.label9 = new System.Windows.Forms.Label();
 			this.tbIteration = new System.Windows.Forms.TextBox();
 			this.label10 = new System.Windows.Forms.Label();
+			this.label11 = new System.Windows.Forms.Label();
+			this.tbNuy = new System.Windows.Forms.TextBox();
+			this.lbBeta = new System.Windows.Forms.Label();
+			this.tbBeta = new System.Windows.Forms.TextBox();
+			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
 			this.SuspendLayout();
 			// 
 			// btOK
 			// 
 			this.btOK.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.btOK.Location = new System.Drawing.Point(124, 198);
+			this.btOK.Location = new System.Drawing.Point(118, 197);
 			this.btOK.Name = "btOK";
 			this.btOK.Size = new System.Drawing.Size(76, 23);
 			this.btOK.TabIndex = 0;
@@ -206,7 +212,7 @@
 			// 
 			this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.btCancel.Location = new System.Drawing.Point(221, 198);
+			this.btCancel.Location = new System.Drawing.Point(226, 197);
 			this.btCancel.Name = "btCancel";
 			this.btCancel.Size = new System.Drawing.Size(76, 23);
 			this.btCancel.TabIndex = 0;
@@ -262,12 +268,58 @@
 			this.label10.TabIndex = 12;
 			this.label10.Text = "Max Iteration:";
 			// 
+			// label11
+			// 
+			this.label11.AutoSize = true;
+			this.label11.Location = new System.Drawing.Point(254, 90);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(29, 13);
+			this.label11.TabIndex = 5;
+			this.label11.Text = "Nuy:";
+			// 
+			// tbNuy
+			// 
+			this.tbNuy.Location = new System.Drawing.Point(302, 87);
+			this.tbNuy.Name = "tbNuy";
+			this.tbNuy.Size = new System.Drawing.Size(100, 20);
+			this.tbNuy.TabIndex = 6;
+			this.tbNuy.Text = "0";
+			// 
+			// lbBeta
+			// 
+			this.lbBeta.AutoSize = true;
+			this.lbBeta.Location = new System.Drawing.Point(254, 116);
+			this.lbBeta.Name = "lbBeta";
+			this.lbBeta.Size = new System.Drawing.Size(32, 13);
+			this.lbBeta.TabIndex = 5;
+			this.lbBeta.Text = "Beta:";
+			// 
+			// tbBeta
+			// 
+			this.tbBeta.Location = new System.Drawing.Point(302, 113);
+			this.tbBeta.Name = "tbBeta";
+			this.tbBeta.Size = new System.Drawing.Size(100, 20);
+			this.tbBeta.TabIndex = 6;
+			this.tbBeta.Text = "0";
+			// 
+			// linkLabel1
+			// 
+			this.linkLabel1.AutoSize = true;
+			this.linkLabel1.Location = new System.Drawing.Point(357, 202);
+			this.linkLabel1.Name = "linkLabel1";
+			this.linkLabel1.Size = new System.Drawing.Size(49, 13);
+			this.linkLabel1.TabIndex = 16;
+			this.linkLabel1.TabStop = true;
+			this.linkLabel1.Text = "About us";
+			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+			// 
 			// SettingForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ClientSize = new System.Drawing.Size(418, 228);
+			this.Controls.Add(this.linkLabel1);
 			this.Controls.Add(this.tbErr);
 			this.Controls.Add(this.label8);
 			this.Controls.Add(this.tbTimer);
@@ -276,6 +328,10 @@
 			this.Controls.Add(this.label10);
 			this.Controls.Add(this.label7);
 			this.Controls.Add(this.label6);
+			this.Controls.Add(this.tbBeta);
+			this.Controls.Add(this.lbBeta);
+			this.Controls.Add(this.tbNuy);
+			this.Controls.Add(this.label11);
 			this.Controls.Add(this.tbLayer3);
 			this.Controls.Add(this.label5);
 			this.Controls.Add(this.tbLayer2);
@@ -290,6 +346,7 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.btCancel);
 			this.Controls.Add(this.btOK);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "SettingForm";
 			this.Text = "SettingForm";
@@ -323,5 +380,10 @@
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.TextBox tbIteration;
 		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.TextBox tbNuy;
+		private System.Windows.Forms.Label lbBeta;
+		private System.Windows.Forms.TextBox tbBeta;
+		private System.Windows.Forms.LinkLabel linkLabel1;
 	}
 }

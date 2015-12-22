@@ -154,5 +154,29 @@ namespace FunctionApproximation.Properties {
                 this["Timer"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.5")]
+        public double LearningRate {
+            get {
+                return ((double)(this["LearningRate"]));
+            }
+            set {
+                this["LearningRate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.5")]
+        public double Beta {
+            get {
+                return ((double)(this["Beta"]));
+            }
+            set {
+                this["Beta"] = value;
+            }
+        }
     }
 }

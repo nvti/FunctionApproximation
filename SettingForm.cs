@@ -34,6 +34,9 @@ namespace FunctionApproximation
 			tbIteration.Text = Settings.Default.Iteration + "";
 			tbErr.Text = Settings.Default.Err + "";
 			tbTimer.Text = Settings.Default.Timer + "";
+
+			tbBeta.Text = Settings.Default.Beta + "";
+			tbNuy.Text = Settings.Default.LearningRate + "";
 		}
 
 		private void btOK_Click(object sender, EventArgs e)
@@ -52,6 +55,9 @@ namespace FunctionApproximation
 				Settings.Default.Learning = cbTrain.SelectedIndex;
 				Settings.Default.Performance = cbPer.SelectedIndex;
 				Settings.Default.Function = cbFunc.SelectedIndex;
+
+				Settings.Default.Beta = double.Parse(tbBeta.Text);
+				Settings.Default.LearningRate = double.Parse(tbNuy.Text);
 
 				Settings.Default.Save();
 				this.Close();
@@ -82,6 +88,11 @@ namespace FunctionApproximation
 					label4.Visible = label5.Visible = tbLayer2.Visible = tbLayer3.Visible = true;
 					break;
 			}
+		}
+
+		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			(new About()).Show();
 		}
 	}
 }
