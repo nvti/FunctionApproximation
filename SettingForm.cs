@@ -8,8 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FunctionApproximation.Properties;
-using DemoNeuralNetwork.NeuralNetworks.LearningAlgorithms;
-
+using NeuralNetwork.LearningAlgorithms;
+using NeuralNetwork.ActivationFunctions;
 
 namespace FunctionApproximation
 {
@@ -22,10 +22,10 @@ namespace FunctionApproximation
 
 		private void SettingForm_Load(object sender, EventArgs e)
 		{
-			cbFunc.SelectedIndex = 0;
+			cbFunc.SelectedIndex = (Settings.Default.Function < cbFunc.Items.Count) ? Settings.Default.Function : 0;
 			cbNumHL.SelectedIndex = Settings.Default.NumHL - 1;
-			cbPer.SelectedIndex = 0;
-			cbTrain.SelectedIndex = 0;
+			cbPer.SelectedIndex = Settings.Default.Performance;
+			cbTrain.SelectedIndex = Settings.Default.Learning;
 
 			tbLayer1.Text = "" + Settings.Default.Layer1;
 			tbLayer2.Text = "" + Settings.Default.Layer2;
@@ -92,7 +92,31 @@ namespace FunctionApproximation
 
 		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			(new About()).Show();
+			(new About()).ShowDialog();
+		}
+
+		private void cbFunc_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			Image i;
+			switch ((ActivationFunc)(((ComboBox)sender).SelectedIndex))
+			{
+				case ActivationFunc.ARCTAN:
+					i = global::FunctionApproximation.Properties.Resources.arctan;
+					break;
+				case ActivationFunc.GAUSSIAN:
+					i = global::FunctionApproximation.Properties.Resources.gaussian;
+					break;
+				case ActivationFunc.TANH:
+					i = global::FunctionApproximation.Properties.Resources.tanh;
+					break;
+				case ActivationFunc.SINC:
+					i = global::FunctionApproximation.Properties.Resources.sinc;
+					break;
+				default:
+					i = global::FunctionApproximation.Properties.Resources.sigmoid;
+					break;
+			}
+			pictureBox1.Image = i;
 		}
 	}
 }

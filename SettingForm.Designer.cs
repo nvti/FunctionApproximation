@@ -56,13 +56,15 @@
 			this.lbBeta = new System.Windows.Forms.Label();
 			this.tbBeta = new System.Windows.Forms.TextBox();
 			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// btOK
 			// 
 			this.btOK.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.btOK.Location = new System.Drawing.Point(118, 197);
+			this.btOK.Location = new System.Drawing.Point(118, 213);
 			this.btOK.Name = "btOK";
 			this.btOK.Size = new System.Drawing.Size(76, 23);
 			this.btOK.TabIndex = 0;
@@ -193,16 +195,21 @@
 			this.cbFunc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbFunc.FormattingEnabled = true;
 			this.cbFunc.Items.AddRange(new object[] {
-            "Sigmoid Function"});
-			this.cbFunc.Location = new System.Drawing.Point(100, 33);
+            "Sigmoid Function",
+            "Tanh",
+            "ArcTan",
+            "Gaussian",
+            "Sinc"});
+			this.cbFunc.Location = new System.Drawing.Point(100, 166);
 			this.cbFunc.Name = "cbFunc";
 			this.cbFunc.Size = new System.Drawing.Size(121, 21);
 			this.cbFunc.TabIndex = 4;
+			this.cbFunc.SelectedIndexChanged += new System.EventHandler(this.cbFunc_SelectedIndexChanged);
 			// 
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(11, 36);
+			this.label7.Location = new System.Drawing.Point(11, 169);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(84, 13);
 			this.label7.TabIndex = 7;
@@ -212,7 +219,7 @@
 			// 
 			this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.btCancel.Location = new System.Drawing.Point(226, 197);
+			this.btCancel.Location = new System.Drawing.Point(226, 213);
 			this.btCancel.Name = "btCancel";
 			this.btCancel.Size = new System.Drawing.Size(76, 23);
 			this.btCancel.TabIndex = 0;
@@ -238,7 +245,7 @@
 			// 
 			// tbTimer
 			// 
-			this.tbTimer.Location = new System.Drawing.Point(100, 166);
+			this.tbTimer.Location = new System.Drawing.Point(100, 33);
 			this.tbTimer.Name = "tbTimer";
 			this.tbTimer.Size = new System.Drawing.Size(121, 20);
 			this.tbTimer.TabIndex = 14;
@@ -246,7 +253,7 @@
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(11, 169);
+			this.label9.Location = new System.Drawing.Point(11, 36);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(73, 13);
 			this.label9.TabIndex = 11;
@@ -304,8 +311,9 @@
 			// 
 			// linkLabel1
 			// 
+			this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.linkLabel1.AutoSize = true;
-			this.linkLabel1.Location = new System.Drawing.Point(357, 202);
+			this.linkLabel1.Location = new System.Drawing.Point(357, 218);
 			this.linkLabel1.Name = "linkLabel1";
 			this.linkLabel1.Size = new System.Drawing.Size(49, 13);
 			this.linkLabel1.TabIndex = 16;
@@ -313,12 +321,22 @@
 			this.linkLabel1.Text = "About us";
 			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
 			// 
+			// pictureBox1
+			// 
+			this.pictureBox1.Image = global::FunctionApproximation.Properties.Resources.sinc;
+			this.pictureBox1.Location = new System.Drawing.Point(272, 142);
+			this.pictureBox1.Name = "pictureBox1";
+			this.pictureBox1.Size = new System.Drawing.Size(120, 60);
+			this.pictureBox1.TabIndex = 17;
+			this.pictureBox1.TabStop = false;
+			// 
 			// SettingForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.ClientSize = new System.Drawing.Size(418, 228);
+			this.ClientSize = new System.Drawing.Size(418, 244);
+			this.Controls.Add(this.pictureBox1);
 			this.Controls.Add(this.linkLabel1);
 			this.Controls.Add(this.tbErr);
 			this.Controls.Add(this.label8);
@@ -346,11 +364,13 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.btCancel);
 			this.Controls.Add(this.btOK);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "SettingForm";
 			this.Text = "SettingForm";
 			this.Load += new System.EventHandler(this.SettingForm_Load);
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -385,5 +405,6 @@
 		private System.Windows.Forms.Label lbBeta;
 		private System.Windows.Forms.TextBox tbBeta;
 		private System.Windows.Forms.LinkLabel linkLabel1;
+		private System.Windows.Forms.PictureBox pictureBox1;
 	}
 }

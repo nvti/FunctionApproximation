@@ -1,12 +1,13 @@
-﻿using DemoNeuralNetwork.NeuralNetworks;
+﻿using NeuralNetwork;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using FunctionApproximation.Properties;
-using DemoNeuralNetwork.NeuralNetworks.ActivationFunctions;
-using DemoNeuralNetwork.NeuralNetworks.Performances;
-using DemoNeuralNetwork.NeuralNetworks.LearningAlgorithms;
+using NeuralNetwork.ActivationFunctions;
+using NeuralNetwork.Performances;
+using NeuralNetwork.LearningAlgorithms;
+using NeuralNetwork.Lists;
 
 namespace FunctionApproximation
 {
@@ -17,7 +18,7 @@ namespace FunctionApproximation
 		List<List<double>> list_ex_output = new List<List<double>>();
 
 		double scale = 1, delta = 0;
-		NeuralNetwork myNN;
+		NNetwork myNN;
 
 		public MainForm()
 		{
@@ -34,7 +35,7 @@ namespace FunctionApproximation
 		{
 			panel2.Enabled = false;
 			var frm = new SettingForm();
-			frm.Show();
+			frm.ShowDialog();
 		}
 
 		private void btStep_Click(object sender, EventArgs e)
@@ -69,9 +70,10 @@ namespace FunctionApproximation
 				series_error.Points.Add(new DataPoint(list_input[i][0], (myNN.Outputs[0] - list_ex_output[i][0])* scale));
 			}
 
-			if(series_Learnerror.Points.Count > 500)
+			if(series_Learnerror.Points.Count > 800)
 				series_Learnerror.Points.RemoveAt(0);
 			series_Learnerror.Points.Add(myNN.La.Error);
+			chart2.ResetAutoValues();
 		}
 
 		private void timer1_Tick(object sender, EventArgs e)
@@ -125,7 +127,7 @@ namespace FunctionApproximation
 
 			ActivationFunc ac = (ActivationFunc)Settings.Default.Function;
 
-			myNN = new NeuralNetwork(n_neuron, nlayer, l, ac);
+			myNN = new NNetwork(n_neuron, nlayer, l, ac);
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
@@ -164,7 +166,7 @@ namespace FunctionApproximation
 						{
 							double x = 2 * Math.PI * i / N;
 							double f = Math.Sin(x);
-							double t = f + (2 * rand.NextDouble() - 1) * noise;
+							double t = f + (2 * rand.NextDouble() - 1) * noise * scale;
 
 							series_input.Points.Add(new DataPoint(x, f));
 							series_target.Points.Add(new DataPoint(x, t));
@@ -179,8 +181,23 @@ namespace FunctionApproximation
 						for(int i = 0; i < N; i++)
 						{
 							double x = 4 * (double)i / N;
-							double t = x + (2 * rand.NextDouble() - 1) * noise;
+							double t = x + (2 * rand.NextDouble() - 1) * noise * scale;
 							series_input.Points.Add(new DataPoint(x, x));
+							series_target.Points.Add(new DataPoint(x, t));
+
+							list_input.Add(new List<double> { x });
+							list_ex_output.Add(new List<double> { (t + delta) / scale });
+						}
+						break;
+					case "|x|":
+						scale = 2.5;
+						delta = 0;
+						for (int i = -N / 2; i < N / 2; i++)
+						{
+							double x = 4 * (double)i / N;
+							double f = Math.Abs(x);
+							double t = f + (2 * rand.NextDouble() - 1) * noise * scale;
+							series_input.Points.Add(new DataPoint(x, f));
 							series_target.Points.Add(new DataPoint(x, t));
 
 							list_input.Add(new List<double> { x });
@@ -194,7 +211,39 @@ namespace FunctionApproximation
 						{
 							double x = 4 * (double)i / N;
 							double f = Math.Sqrt(x);
-							double t = f + (2 * rand.NextDouble() - 1) * noise;
+							double t = f + (2 * rand.NextDouble() - 1) * noise * scale;
+
+							series_input.Points.Add(new DataPoint(x, f));
+							series_target.Points.Add(new DataPoint(x, t));
+
+							list_input.Add(new List<double> { x });
+							list_ex_output.Add(new List<double> { (t + delta) / scale });
+						}
+						break;
+					case "x^2":
+						scale = 4;
+						delta = 0;
+						for (int i = -N/2; i < N/2; i++)
+						{
+							double x = 4 * (double)i / N;
+							double f = x * x;
+							double t = f + (2 * rand.NextDouble() - 1) * noise * scale;
+
+							series_input.Points.Add(new DataPoint(x, f));
+							series_target.Points.Add(new DataPoint(x, t));
+
+							list_input.Add(new List<double> { x });
+							list_ex_output.Add(new List<double> { (t + delta) / scale });
+						}
+						break;
+					case "log(x)":
+						scale = 1;
+						delta = 0;
+						for (int i = 0; i < N; i++)
+						{
+							double x = 8 * (double)i / N + 1;
+							double f = Math.Log10(x);
+							double t = f + (2 * rand.NextDouble() - 1) * noise * scale;
 
 							series_input.Points.Add(new DataPoint(x, f));
 							series_target.Points.Add(new DataPoint(x, t));
@@ -210,7 +259,7 @@ namespace FunctionApproximation
 						{
 							double x = 2 * Math.PI * i / N;
 							double f = Math.Cos(x);
-							double t = f + (2 * rand.NextDouble() - 1) * noise;
+							double t = f + (2 * rand.NextDouble() - 1) * noise * scale;
 
 							series_input.Points.Add(new DataPoint(x, f));
 							series_target.Points.Add(new DataPoint(x, t));
